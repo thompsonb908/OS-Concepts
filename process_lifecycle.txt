@@ -1,0 +1,32 @@
+-- Step :: file :: function --
+-- Description --
+
+1.	main.c		int main(void)
+	Collect info about machine.
+	Call mainc() on properly allocated stack with jmpkstack().
+
+2.	main.c		void mainc(void)
+	Intialize tabels / ports / processors.
+	Calls userinit() to create the first process.
+	Calls scheduler() to start the scheduler.
+
+3.	proc.c		void scheduler(void)
+	Gets ptable, finds next runnable process.
+	Set process to RUNNUNG state.
+	Call swtch( old kernel stack, new kernel stack )
+
+4.	swtch.S		void swtch(struct context **old, struct context *new)
+	save old callee registers
+	switch stacks
+	load new registers
+
+5.	trap.c		void trap(struct trapframe *tf)
+	if(proc && proc->state == RUNNING && tf->trapno == T_IRQO + IRQ_TIMER) - Timer interupt
+		yield();
+
+6.	proc.c		void yield(void)
+	proc->state = RUNNABLE
+	sched();
+
+7.	proc.c		void sched(void)
+	swtch(&proc->context, cpu->scheduler) - Return to scheduler that called process.
