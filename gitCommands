@@ -1,0 +1,82 @@
+-- Version Info --
+git --version
+
+-- Config Values --
+git config --global user.name "Name"
+git config --global user.email "email"
+git config --list
+
+-- Help Commands --
+git help <verb>
+git <verb> --help
+
+-- Start git repository --
+git init
+
+-- Before Commits --
+git status
+
+-- Add to staging area --
+git add -A
+git add <file>
+
+-- Commit changes --
+git commit -m "Commit Message"
+git status
+git log
+
+-- Clone Repostiory --
+git clone <url> <Destination>
+
+-- Remote Repository Information --
+git remote -v
+git branch -a
+
+-- Pushing Changes --
+git diff
+git status
+git add -A
+git commit -m "Commit Message"
+
+git pull origin master
+git push origin master
+
+-- Branch Commands --
+git branch
+git branch <Branch name>
+git checkout <Branch name>
+
+-- Push to Remote --
+git push -u origin <Branch name>
+git pull
+git push
+
+git branch -a
+
+-- Merge Branch --
+git checkout master
+git pull origin master
+git branch --merged
+git merge <Branch name>
+git push origin master
+
+-- Delete Branch --
+git branch --merged
+git branch -d <Branch name>
+git branch -a
+git push origin --delete <Branch name>
+
+-- Quick Example --
+git branch subtract
+git checkout subtract
+**make changes**
+git status
+git add -A
+git commit -m "Finished subtract function"
+git push -u origin subtract
+git checkout master
+git pull origin master
+git merger subtract
+git push origin master
+git branch -d subtract
+git push origin --delete subtract
