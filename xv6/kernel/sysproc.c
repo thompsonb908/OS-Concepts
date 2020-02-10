@@ -8,6 +8,16 @@
 
 int pidCount = 0;
 
+int sys_setpri(void)
+{
+	return 0;
+}
+
+int getpinfo(void)
+{
+	return 0;
+}
+
 int
 sys_fork(void)
 {
