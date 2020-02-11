@@ -1,7 +1,7 @@
 # OS-Concepts
 Operating Systems Concepts COP4610
 
-Brandon Thompson, Samantha Gossett
+Brandon Thompson, Samantha Gossett, Joseph Patullo
 
 Prof. Luis Jaimes
 ## Finished projects:
