@@ -1,13 +1,13 @@
 -- File :: Modification --
 
-include/syscall.h	::	Define new system call numbers.
+*include/syscall.h	::	Define new system call numbers.
 
 include/pstat.h		::	Data structure given in documentation.
 				(Split ticks var into high and low priority ticks.)
 
 kernel/defs.h		::	??
 
-kernel/sysproc.c	::	Implementation of setpri(void), and getpinfo(pstat*)
+*kernel/sysproc.c	::	Implementation of setpri(void), and getpinfo(pstat*)
 				system calls.
 
 kernel/proc.h		::	Add variables to proc {..} structure.
@@ -16,17 +16,17 @@ kernel/proc.h		::	Add variables to proc {..} structure.
 kernel/proc.c		::	Modify scheduling algorithm to implement MLFQ for two
 				(high priority and low priority) queues.
 
-kernel/syscall.c	::	Update array of function pointers to handlers for
+*kernel/syscall.c	::	Update array of function pointers to handlers for
 				new system calls.
 
-kernel/sysfunc.h	::	Define system call handelers.
+*kernel/sysfunc.h	::	Define system call handelers.
 
 user/tickettest.c	::	??
 
 user/ps.c		::	??
 
-user/user.h		::	Add system calls so user can execute system calls.
+*user/user.h		::	Add system calls so user can execute system calls.
 
-user/usys.S		::	Defin SYSCALL(name) for new system calls.
+*user/usys.S		::	Defin SYSCALL(name) for new system calls.
 
 
