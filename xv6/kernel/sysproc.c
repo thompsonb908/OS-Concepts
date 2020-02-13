@@ -10,12 +10,18 @@ int pidCount = 0;
 
 int sys_setpri(void)
 {
-	return 0;
+	int pri;
+	if(argint(0, &pri) < 0)
+		return -1;
+	return setpri(pri);
 }
 
-int getpinfo(void)
+int sys_getpinfo(void)
 {
-	return 0;
+	char* pstat;
+	if(argptr(0, &pstat, sizeof(struct pstat)) < 0)
+		return -1;
+	return getpinfo((struct pstat*)pstat);
 }
 
 int

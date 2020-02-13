@@ -443,4 +443,42 @@ procdump(void)
   }
 }
 
+int
+petpinfo(struct pstat* pstat)
+{
+	//TODO: Error Handling?
+	//TODO: pstat->inuse variable?
+	struct proc *p;
+	int i = 0;
+	acquire(&ptable.lock);
+	for(p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
+		//for each process in the ptable
+		//fill out the pstat table.
 
+		pstat->inuse[i] = 1;
+		pstat->pid[i] = p->pid;
+		pstat->hticks[i] = p->hticks;
+		pstat->lticks[i] = p->lticks;
+		i++;
+	}
+	release(&ptable.lock);
+	return 0;
+}
+
+int setpri(int num)
+{
+	//error handling
+	if(num < 1 || num > 2)
+		return -1;
+
+	struct proc *p;
+	acquire(&ptable.lock);
+	for(p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
+		//for each process in the ptable
+		//find the current process.
+		if(p->state == RUNNING)
+			p->queue = num;
+	}
+	release(&ptable.lock);
+	return 0;
+}
