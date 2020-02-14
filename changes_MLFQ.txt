@@ -5,7 +5,7 @@
 include/pstat.h		::	Data structure given in documentation.
 				(Split ticks var into high and low priority ticks.)
 
-kernel/defs.h		::	??
+kernel/defs.h		::	Add system calls under proc.c list
 
 *kernel/sysproc.c	::	Implementation of setpri(void), and getpinfo(pstat*)
 				system calls.
@@ -23,7 +23,7 @@ kernel/proc.c		::	Modify scheduling algorithm to implement MLFQ for two
 
 user/tickettest.c	::	??
 
-user/ps.c		::	??
+user/ps.c		::	Testing for priority scheduler.
 
 *user/user.h		::	Add system calls so user can execute system calls.
 
