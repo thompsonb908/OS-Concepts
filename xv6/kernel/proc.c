@@ -5,6 +5,7 @@
 #include "x86.h"
 #include "proc.h"
 #include "spinlock.h"
+#include "pstat.h"
 
 struct {
   struct spinlock lock;
@@ -450,15 +451,18 @@ int
 getpinfo(struct pstat* pstat)
 {
 	//TODO: Error Handling?
-	//TODO: pstat->inuse variable?
 	struct proc *p;
 	int i = 0;
 	acquire(&ptable.lock);
 	for(p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
 		//for each process in the ptable
 		//fill out the pstat table.
+		
+		if(p->state == RUNNING)
+			pstat->inuse[i] = 1;
+		else
+			pstat->inuse[i] = 0;
 
-		pstat->inuse[i] = 1;
 		pstat->pid[i] = p->pid;
 		pstat->hticks[i] = p->hticks;
 		pstat->lticks[i] = p->lticks;
