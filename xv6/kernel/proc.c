@@ -67,7 +67,10 @@ found:
   p->context = (struct context*)sp;
   memset(p->context, 0, sizeof *p->context);
   p->context->eip = (uint)forkret;
-
+  
+  //Set initial priority
+  p->queue=2; //highest priority
+  
   return p;
 }
 
@@ -444,7 +447,7 @@ procdump(void)
 }
 
 int
-petpinfo(struct pstat* pstat)
+getpinfo(struct pstat* pstat)
 {
 	//TODO: Error Handling?
 	//TODO: pstat->inuse variable?
