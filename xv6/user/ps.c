@@ -6,5 +6,6 @@
 int
 main(int argc, char *argv[])
 {
-  getpinfo();
+  printf(1, "ps.c test (does nothing)\n");
+  //printf(1, "getpinfo call: %d", getpinfo());
 }

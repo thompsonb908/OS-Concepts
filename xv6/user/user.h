@@ -2,6 +2,7 @@
 #define _USER_H_
 
 struct stat;
+struct pstat;
 
 // system calls
 int fork(void);

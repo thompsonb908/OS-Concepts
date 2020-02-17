@@ -75,7 +75,9 @@ found:
   //Added
   //Set initial priority
   p->queue=2; //highest priority
-  p->hticks = 0;
+  int i;
+  for(i = 0; i < sizeof(p->ticks); i++)
+    p->ticks[i] = 0;
   p->lastScheduledOnTick = 0;
   return p;
 }
@@ -271,9 +273,9 @@ scheduler(void)
     sti();
 
     //Added ticks counters
-    uint xticks;
+    //uint xticks;
     acquire(&tickslock);
-    xticks = ticks;
+    //xticks = ticks;
     release(&tickslock);
     //TODO: Priority booster (set all processes to top queue).
     //TODO: lastScheduled number
