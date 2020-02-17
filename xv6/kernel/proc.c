@@ -74,7 +74,7 @@ found:
   
   //Added
   //Set initial priority
-  p->queue=2; //highest priority
+  p->queue=0; //highest priority
   int i;
   for(i = 0; i < sizeof(p->ticks); i++)
     p->ticks[i] = 0;
@@ -266,6 +266,9 @@ wait(void)
 void
 scheduler(void)
 {
+  int i, j;
+  int lastScheduledProc = -1;
+
   struct proc *p;
 
   for(;;){
@@ -277,15 +280,15 @@ scheduler(void)
     acquire(&tickslock);
     //xticks = ticks;
     release(&tickslock);
-    //TODO: Priority booster (set all processes to top queue).
-    //TODO: lastScheduled number
+    //TODO: Priority booster (set all processes to top queue).based on ticks
+    
     //TODO: check for next available process in each queue
     //TODO: Run highest priority
     //TODO: Check if time slice is complete
     //TODO: Check other queues
-    //TODO Run process (Complete)
+    
 
-    // Loop over process table looking for process to run.
+    // Loop over process table looking for process to run.:wq
     acquire(&ptable.lock);
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
       if(p->state != RUNNABLE)
