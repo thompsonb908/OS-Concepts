@@ -27,7 +27,7 @@ int sleep(int);
 int uptime(void);
 int getpidcount(void);
 int setpri(void);
-int getpinfo(void);
+int getpinfo(struct pstat*);
 
 // user library functions (ulib.c)
 int stat(char*, struct stat*);
