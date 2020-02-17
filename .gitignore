@@ -23,20 +23,19 @@ xv6.img
 xv6memfs.img
 
 # Other generated files
-bootother
+xv6/bootother
 initcode
 TAGS
 .gdbinit
 fs/
-kernel/vectors.S
-kernel/bootblock
-kernel/bootblock.out
-kernel/bootother.out
-kernel/initcode.out
-kernel/kernel
-bootother
-initcode
-user/bin/
+xv6/kernel/vectors.S
+xv6/kernel/bootblock
+xv6/kernel/bootblock.out
+xv6/kernel/bootother.out
+xv6/kernel/initcode.out
+xv6/kernel/kernel
+xv6/bootother
+xv6/user/bin/
 tools/mkfs
 version
 *.swp
