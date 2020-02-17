@@ -6,8 +6,8 @@
 struct pstat {
 	int inuse[NPROC];	// Whether this slot of the process table is in user (1 or 0)
 	int pid[NPROC];		// The PID of each process
-	int hticks[NPROC];	// The number of ticks in the high queue.
-	int lticks[NPROC];	// Number of ticks in the low queue.
+	int queue[NPROC];	// Current queue number
+	int ticks[NPROC][3];	// The number of ticks for each queue;
 
 };
 
