@@ -5,7 +5,7 @@
 #include "x86.h"
 #include "proc.h"
 #include "spinlock.h"
-#include "pstat.h"
+#include "../include/pstat.h"
 
 struct {
   struct spinlock lock;
@@ -17,6 +17,9 @@ static struct proc *initproc;
 int nextpid = 1;
 extern void forkret(void);
 extern void trapret(void);
+
+//added ticks value
+extern uint ticks;
 
 static void wakeup1(void *chan);
 
@@ -69,9 +72,11 @@ found:
   memset(p->context, 0, sizeof *p->context);
   p->context->eip = (uint)forkret;
   
+  //Added
   //Set initial priority
   p->queue=2; //highest priority
-  
+  p->hticks = 0;
+  p->lastScheduledOnTick = 0;
   return p;
 }
 
@@ -265,6 +270,19 @@ scheduler(void)
     // Enable interrupts on this processor.
     sti();
 
+    //Added ticks counters
+    uint xticks;
+    acquire(&tickslock);
+    xticks = ticks;
+    release(&tickslock);
+    //TODO: Priority booster (set all processes to top queue).
+    //TODO: lastScheduled number
+    //TODO: check for next available process in each queue
+    //TODO: Run highest priority
+    //TODO: Check if time slice is complete
+    //TODO: Check other queues
+    //TODO Run process (Complete)
+
     // Loop over process table looking for process to run.
     acquire(&ptable.lock);
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
@@ -457,15 +475,19 @@ getpinfo(struct pstat* pstat)
 	for(p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
 		//for each process in the ptable
 		//fill out the pstat table.
-		
+		if(p->state == UNUSED)
+			continue;
+
 		if(p->state == RUNNING)
 			pstat->inuse[i] = 1;
 		else
 			pstat->inuse[i] = 0;
 
 		pstat->pid[i] = p->pid;
-		pstat->hticks[i] = p->hticks;
-		pstat->lticks[i] = p->lticks;
+		int j;
+		for(j = 1; j < 3; j++){
+			pstat->ticks[i][j] = p->ticks[j];
+		}
 		i++;
 	}
 	release(&ptable.lock);
