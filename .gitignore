@@ -36,7 +36,7 @@ xv6/kernel/initcode.out
 xv6/kernel/kernel
 xv6/bootother
 xv6/user/bin/
-tools/mkfs
+xv6/tools/mkfs
 version
 *.swp
 
