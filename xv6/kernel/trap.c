@@ -49,6 +49,10 @@ trap(struct trapframe *tf)
     if(cpu->id == 0){
       acquire(&tickslock);
       ticks++;
+      //Added: increase ticks for current queue number.
+      if(proc) {
+        proc->ticks[proc->queue]++;
+      }
       wakeup(&ticks);
       release(&tickslock);
     }
