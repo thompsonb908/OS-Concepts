@@ -5,7 +5,7 @@
 #include "x86.h"
 #include "proc.h"
 #include "spinlock.h"
-#include "../include/pstat.h"
+#include "pstat.h"
 
 struct {
   struct spinlock lock;
@@ -71,14 +71,11 @@ found:
   p->context = (struct context*)sp;
   memset(p->context, 0, sizeof *p->context);
   p->context->eip = (uint)forkret;
-  
-  //Added
-  //Set initial priority
-  p->queue=0; //highest priority
-  int i;
-  for(i = 0; i < sizeof(p->ticks); i++)
-    p->ticks[i] = 0;
+
+  p->queue = 0;
+  p->ticks[0] = p->ticks[1] = 0;
   p->lastScheduledOnTick = 0;
+  
   return p;
 }
 
@@ -269,44 +266,112 @@ scheduler(void)
   int i, j;
   int lastScheduledProc = -1;
 
-  struct proc *p;
-
   for(;;){
     // Enable interrupts on this processor.
     sti();
 
     //Added ticks counters
-    //uint xticks;
+    uint gticks;
     acquire(&tickslock);
-    //xticks = ticks;
+    gticks = ticks;
     release(&tickslock);
-    //TODO: Priority booster (set all processes to top queue).based on ticks
     
-    //TODO: check for next available process in each queue
-    //TODO: Run highest priority
-    //TODO: Check if time slice is complete
-    //TODO: Check other queues
-    
-
-    // Loop over process table looking for process to run.:wq
     acquire(&ptable.lock);
-    for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
-      if(p->state != RUNNABLE)
-        continue;
 
-      // Switch to chosen process.  It is the process's job
-      // to release ptable.lock and then reacquire it
-      // before jumping back to us.
-      proc = p;
-      switchuvm(p);
-      p->state = RUNNING;
-      swtch(&cpu->scheduler, proc->context);
-      switchkvm();
-
-      // Process is done running for now.
-      // It should have changed its p->state before coming back.
-      proc = 0;
+    //RULE: 5
+    //Increase queue if has not been scheduled in 100 ticks.
+    if(gticks % 100 == 0){
+      for(j = 0; j < NPROC; j++) {
+        if(j == lastScheduledProc || ptable.proc[j].state != RUNNABLE) {
+	  continue;
+	}
+	if(ptable.proc[j].queue > 0 && gticks - ptable.proc[j].lastScheduledOnTick >= 100) {
+	  ptable.proc[j].queue--;
+	}
+      }
     }
+    
+    //Find next process to schedule for each queue
+    struct proc *nextInQueue[2] = {0};
+    for(i = (lastScheduledProc + 1) % NPROC, j = 0; i != lastScheduledProc && j < NPROC; i = (i + 1) % NPROC, ++j) {
+      if(ptable.proc[i].state == RUNNABLE) { //if Process is runnable
+        if(!nextInQueue[ptable.proc[i].queue]) { // and there is nothing already scheduled
+          nextInQueue[ptable.proc[i].queue] = &ptable.proc[i]; // add process to next in queue
+    	}
+      }
+    }
+    struct proc *p = 0;
+    
+    //Run process in highest queue
+    int queue;
+    // lowestQueue = number of queues or queue of last scheduled process
+    int lowestQueue = lastScheduledProc == -1 ? 2 : ptable.proc[i].queue;
+    for(queue = 0; queue < lowestQueue; ++queue) {
+      if(nextInQueue[queue]) {
+        p = nextInQueue[queue];
+	break;
+      }
+    }
+    
+    if(!p) {
+      // Check if time-slice of last scheduled process is complete
+      // If time slice finished, increase queue number
+      // Else look hugh other queues
+      int timeSliceComplete; //0 or 1
+      int pticks = ptable.proc[lastScheduledProc].ticks[ptable.proc[lastScheduledProc].queue];
+      switch (ptable.proc[lastScheduledProc].queue) {
+	case 0:
+	  timeSliceComplete = (pticks % 5 == 0 && pticks != 0);
+	  break;
+	case 1:
+	  timeSliceComplete = (pticks % 10 == 0 && pticks != 0);
+	  break;
+      }
+
+      if(ptable.proc[lastScheduledProc].queue < 1) {
+	ptable.proc[lastScheduledProc].queue += timeSliceComplete;
+      }
+
+      if (!timeSliceComplete && ptable.proc[lastScheduledProc].state == RUNNABLE) {
+	p = &ptable.proc[lastScheduledProc];
+      } 
+      else {
+	// If no process in last scheduled process's queue
+	// put the last run proccess as the next process for that priority
+	if(!nextInQueue[ptable.proc[lastScheduledProc].queue] && ptable.proc[lastScheduledProc].state == RUNNABLE) {
+	  nextInQueue[ptable.proc[lastScheduledProc].queue] = &ptable.proc[lastScheduledProc];
+	}
+	// Check rest of queues for a process
+	for(; queue < 2; ++queue) {
+	  if(nextInQueue[queue]){
+	    p = nextInQueue[queue];
+	    break;
+	  }
+	}
+      }
+
+      if(!p) {
+	// If nothing else, reschedule
+	p = &ptable.proc[lastScheduledProc];
+      }
+    }
+
+      if(p) {
+	p->lastScheduledOnTick = gticks;
+	lastScheduledProc = p - ptable.proc;
+      
+        // Switch to chosen process.  It is the process's job
+        // to release ptable.lock and then reacquire it
+        // before jumping back to us.
+        proc = p;
+        switchuvm(p);
+        p->state = RUNNING;
+        swtch(&cpu->scheduler, proc->context);
+        switchkvm();
+      }
+    // Process is done running for now.
+    // It should have changed its p->state before coming back.
+    proc = 0;
     release(&ptable.lock);
 
   }

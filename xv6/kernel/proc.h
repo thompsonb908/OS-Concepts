@@ -77,8 +77,8 @@ struct proc {
   struct inode *cwd;           // Current directory
   char name[16];               // Process name (debugging)
 
-  int queue;                   // 1 or 2 depending on priority level.
-  int ticks[3];                // Tick counter for each queue level.
+  int queue;                   // 0 or 1 depending on priority level.
+  int ticks[2];                // Tick counter for each queue level.
   int lastScheduledOnTick;     // Tick the process was last scheduled on.
 };
 
