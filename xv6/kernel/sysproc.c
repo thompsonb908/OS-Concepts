@@ -9,14 +9,6 @@
 
 int pidCount = 0;
 
-int sys_setpri(void)
-{
-	int pri;
-	if(argint(0, &pri) < 0)
-		return -1;
-	return setpri(pri);
-}
-
 int sys_getpinfo(void)
 {
 	char* pstat;

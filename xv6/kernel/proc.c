@@ -563,21 +563,3 @@ getpinfo(struct pstat* pstat)
 	release(&ptable.lock);
 	return 0;
 }
-
-int setpri(int num)
-{
-	//error handling
-	if(num < 1 || num > 2)
-		return -1;
-
-	struct proc *p;
-	acquire(&ptable.lock);
-	for(p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
-		//for each process in the ptable
-		//find the current process.
-		if(p->state == RUNNING)
-			p->queue = num;
-	}
-	release(&ptable.lock);
-	return 0;
-}

@@ -27,7 +27,6 @@ char* sbrk(int);
 int sleep(int);
 int uptime(void);
 int getpidcount(void);
-int setpri(void);
 int getpinfo(struct pstat*);
 
 // user library functions (ulib.c)
