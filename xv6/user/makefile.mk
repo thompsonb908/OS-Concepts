@@ -19,7 +19,7 @@ USER_PROGS := \
 	zombie\
 	hello\
 	getpidcount\
-	ps
+	mlfq
 
 USER_PROGS := $(addprefix user/, $(USER_PROGS))
 
