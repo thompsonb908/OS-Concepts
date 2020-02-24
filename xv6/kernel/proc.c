@@ -324,7 +324,7 @@ scheduler(void)
 	  timeSliceComplete = (pticks % 5 == 0 && pticks != 0);
 	  break;
 	case 1:
-	  timeSliceComplete = (pticks % 10 == 0 && pticks != 0);
+	  //timeSliceComplete = (pticks % 10 == 0 && pticks != 0);
 	  break;
       }
 
