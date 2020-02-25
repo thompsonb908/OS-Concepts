@@ -548,6 +548,8 @@ getpinfo(struct pstat* pstat)
 		if(p->state == UNUSED)
 			continue;
 
+		pstat->queue[i] = p->queue;
+
 		if(p->state == RUNNING)
 			pstat->inuse[i] = 1;
 		else
