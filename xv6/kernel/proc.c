@@ -316,7 +316,7 @@ scheduler(void)
     if(!p) {
       // Check if time-slice of last scheduled process is complete
       // If time slice finished, increase queue number
-      // Else look hugh other queues
+      // Else look through other queues
       int timeSliceComplete; //0 or 1
       int pticks = ptable.proc[lastScheduledProc].ticks[ptable.proc[lastScheduledProc].queue];
       switch (ptable.proc[lastScheduledProc].queue) {
@@ -324,7 +324,7 @@ scheduler(void)
 	  timeSliceComplete = (pticks % 5 == 0 && pticks != 0);
 	  break;
 	case 1:
-	  //timeSliceComplete = (pticks % 10 == 0 && pticks != 0);
+	  timeSliceComplete = (pticks % 10 == 0 && pticks != 0);
 	  break;
       }
 
