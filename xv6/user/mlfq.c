@@ -24,7 +24,7 @@ void printPstat(struct pstat *p) {
   }
   printf(1, "-----------------------------------------\n");
   printf(1, "| Inuse\t|  PID\t| Queue\t| T[0]\t| T[1]\t|\n");
-  for(i = 0; i < 10; i++) {
+  for(i = 0; i < 6; i++) {
     printf(1, "-----------------------------------------\n");
     printf(1, "|   %d\t|   %d\t|   %d\t|  %d \t|  %d \t|\n",
     p->inuse[i], p->pid[i], p->queue[i], p->ticks[i][0], p->ticks[i][1]);
@@ -50,10 +50,10 @@ main(int argc, char *argv[])
   {
     if(fork() == 0){
       printf(1, "Child %d\n",i);
-      int x = 0;
-      for(j=0; j < 10; j=j+2) {
+      int x = 1;
+      for(j=1; j < 10; j=j+2) {
         x = (x * (i * j * 4000 * 256) / 52);
-	printf(1, "Calculated value: %f\n",x);
+	printf(1, "Calculated value: %d\n",x);
 	printPstat(p);
       }
       printf(1, "Exiting child %d\n",i);

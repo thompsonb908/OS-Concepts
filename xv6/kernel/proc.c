@@ -538,7 +538,6 @@ procdump(void)
 int
 getpinfo(struct pstat* pstat)
 {
-	//TODO: Error Handling?
 	struct proc *p;
 	int i = 0;
 	acquire(&ptable.lock);
