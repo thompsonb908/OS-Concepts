@@ -20,7 +20,9 @@ USER_PROGS := \
 	hello\
 	getpidcount\
 	mlfq\
-	null
+	null\
+	Test1\
+	Test2
 
 USER_PROGS := $(addprefix user/, $(USER_PROGS))
 
@@ -42,7 +44,7 @@ USER_CLEAN := user/bin $(USER_PROGS) $(USER_OBJECTS) $(USER_DEPS)
 # add include dir to search path for headers
 USER_CPPFLAGS += -I include
 
-# do not search standard system paths for headers
+# do not search s://www.youtube.com/watch?v=t4Oah_cUs_ktandard system paths for headers
 USER_CPPFLAGS += -nostdinc
 
 # disable PIC (position independent code)
