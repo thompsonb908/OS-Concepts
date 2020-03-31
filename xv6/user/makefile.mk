@@ -22,7 +22,6 @@ USER_PROGS := \
 	mlfq\
 	null\
 	Test1\
-	Test2
 
 USER_PROGS := $(addprefix user/, $(USER_PROGS))
 
@@ -79,7 +78,7 @@ USER_LDFLAGS += --omagic
 USER_LDFLAGS += --entry=main
 
 # location in memory where the program will be loaded
-USER_LDFLAGS += --section-start=.text=0x1 # PGSIZE = 4096 = 0x1
+USER_LDFLAGS += --section-start=.text=0x1000 # PGSIZE = 4096 = 0x1000
 
 user/bin:
 	mkdir -p user/bin
