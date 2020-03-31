@@ -22,6 +22,8 @@ USER_PROGS := \
 	mlfq\
 	null\
 	Test1\
+	Test2\
+	test1-test2
 
 USER_PROGS := $(addprefix user/, $(USER_PROGS))
 
